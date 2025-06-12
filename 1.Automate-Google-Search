@@ -1,0 +1,18 @@
+const { Builder, By, Key } = require('selenium-webdriver');
+
+async function googleSearch() {
+  let driver = await new Builder().forBrowser('chrome').build();
+  try {
+    await driver.get('https://www.google.com');
+
+    const searchBox = await driver.findElement(By.name('q'));
+    await searchBox.sendKeys('Selenium WebDriver', Key.RETURN);
+
+    // Wait a few seconds so we can see the result before quitting (optional)
+    await driver.sleep(5000); // 5 seconds
+  } finally {
+    await driver.quit(); // Properly closes the browser
+  }
+}
+
+googleSearch();
