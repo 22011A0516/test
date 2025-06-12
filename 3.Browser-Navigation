@@ -1,0 +1,43 @@
+const { Builder, By, Key, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+
+(async function handleBrowserNavigation() {
+  // Set up the WebDriver instance
+  let driver = await new Builder()
+    .forBrowser('chrome')
+    .setChromeOptions(new chrome.Options())
+    .build();
+
+  try {
+    // Navigate to the first URL (Google)
+    console.log('Navigating to Google...');
+    await driver.get('https://www.google.com');
+    await driver.sleep(2000); // Wait for 2 seconds
+
+    // Navigate to the second URL (Wikipedia)
+    console.log('Navigating to Wikipedia...');
+    await driver.get('https://www.wikipedia.org/');
+    await driver.sleep(2000);
+
+    // --- Handle Browser Back Navigation ---
+    console.log('Navigating back...');
+    await driver.navigate().back();
+    await driver.sleep(2000);
+
+    // --- Handle Browser Forward Navigation ---
+    console.log('Navigating forward...');
+    await driver.navigate().forward();
+    await driver.sleep(2000);
+
+    // --- Handle Browser Refresh ---
+    console.log('Refreshing the page...');
+    await driver.navigate().refresh();
+    await driver.sleep(2000);
+
+  } catch (err) {
+    console.error('Error:', err);
+  } finally {
+    // Close the browser
+    await driver.quit();
+  }
+})();
