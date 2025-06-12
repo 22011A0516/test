@@ -1,0 +1,25 @@
+const { Builder } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+const fs = require('fs');
+
+(async function takeScreenshot() {
+  let driver = await new Builder()
+    .forBrowser('chrome')
+    .setChromeOptions(new chrome.Options())
+    .build();
+
+  try {
+    await driver.get('https://www.wikipedia.org');
+
+    // Take a screenshot
+    let screenshot = await driver.takeScreenshot();
+
+    // Save screenshot to file
+    fs.writeFileSync('screenshot.png', screenshot, 'base64');
+    console.log('Screenshot saved successfully as screenshot.png!');
+  } catch (err) {
+    console.error('Error:', err);
+  } finally {
+    await driver.quit();
+  }
+})();
