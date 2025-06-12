@@ -1,0 +1,14 @@
+const { Builder, By } = require('selenium-webdriver');
+
+async function countLinks() {
+  let driver = await new Builder().forBrowser('chrome').build();
+  try {
+    await driver.get('https://www.wikipedia.org');
+    const links = await driver.findElements(By.tagName('a'));
+    console.log("Total hyperlinks:", links.length);
+  } finally {
+    await driver.quit();
+  }
+}
+
+countLinks();
