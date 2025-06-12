@@ -1,0 +1,29 @@
+const { Builder, By, until } = require('selenium-webdriver');
+
+async function extractWikipedia() {
+  const driver = await new Builder().forBrowser('chrome').build();
+  try {
+    await driver.get('https://en.wikipedia.org/wiki/OpenAI');
+
+    // Wait until at least one paragraph in the content area is available
+    await driver.wait(until.elementLocated(By.css('#mw-content-text p')), 10000);
+
+    // Get all <p> elements in the article body
+    const paragraphs = await driver.findElements(By.css('#mw-content-text p'));
+
+    for (const para of paragraphs) {
+      const text = await para.getText();
+      if (text.trim().length > 0) {
+        console.log("\nWikipedia - OpenAI (first non-empty paragraph):\n");
+        console.log(text);
+        break;
+      }
+    }
+  } catch (err) {
+    console.error("Failed to extract paragraph:", err.message);
+  } finally {
+    await driver.quit();
+  }
+}
+
+extractWikipedia();
